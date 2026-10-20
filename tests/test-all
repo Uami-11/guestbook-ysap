@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# dave hates this, but damn if it's not effective
+# https://blog.daveeddy.com/2015/04/13/dirname-case-study-for-bash-and-node/
+CDPATH='' cd -- "$(dirname -- "$0")/.." || exit 1
+
+code=0
+for f in ./contributors/*.txt; do
+	./tools/validate-file "$f" || code=1
+done
+exit "$code"

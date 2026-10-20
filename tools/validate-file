@@ -1,0 +1,99 @@
+#!/usr/bin/env perl
+#
+# Validate a single contributor file.
+#
+# I know, it's perl - isn't that crazy?! I would have liked to use bash, but i
+# wasn't able to validate the emoji in a consistent way that handled compound
+# emojis.  don't deep-dive into emojis - they are a stupid rabbit hole and omg
+# they are hard to validate lol.  but, perl can do it.  well, it can actually
+# validate "1 visible grapheme" but that's good enough for me.
+#
+# # Created
+# Author: Dave Eddy <ysap@daveeddy.com>
+# Date: October 20, 2026
+# License: MIT
+#
+# # Contributors
+# - Dave Eddy <ysap@daveeddy.com>
+
+use strict;
+use warnings;
+
+use Encode qw(decode FB_CROAK);
+use File::Basename qw(basename);
+
+sub usage {
+	print STDERR "usage: validate-file ./contributors/<github-login>.txt\n";
+}
+
+sub fail {
+	my ($message) = @_;
+	print STDERR "error: $message\n";
+	exit 1;
+}
+
+# get file argument
+if (@ARGV != 1) {
+	usage();
+	exit 2;
+}
+my $file = $ARGV[0];
+
+# ensure it is a regular file
+-f $file or fail("not a regular file: $file");
+-l $file and fail("symbolic links are not allowed: $file");
+
+# get the username from the file
+my $name = basename($file);
+$name =~ /\.txt\z/ or fail('filename must end in .txt');
+my $login = $name;
+$login =~ s/\.txt\z//;
+
+# validate github username
+$login =~ /\A[a-z0-9][a-z0-9-]{0,38}\z/
+    or fail('filename must contain a lowercase GitHub login');
+$login !~ /--/ or fail('GitHub logins cannot contain consecutive hyphens');
+$login !~ /-\z/ or fail('GitHub logins cannot end with a hyphen');
+
+# read the file as raw bytes
+open my $fh, '<:raw', $file or fail("cannot read $file: $!");
+local $/;
+my $bytes = <$fh>;
+close $fh or fail("cannot close $file: $!");
+
+# validate the file contents (not empty, 1 line, no \r)
+length($bytes) > 0 && $bytes =~ /\n\z/ && $bytes !~ /\n./s
+    or fail('file must contain exactly one newline-terminated line');
+$bytes !~ /\r/ or fail('Windows-style CRLF line endings are not allowed');
+
+# we have 1 line - decode it as UTF-8
+my $line;
+eval {
+	$line = decode('UTF-8', substr($bytes, 0, -1), FB_CROAK);
+	1;
+} or fail('file must be valid UTF-8');
+
+# parse the structure of the line with regex
+my ($have_login, $symbol) =
+    $line =~ /\A([^ ]+) [wW][aA][sS] [hH][eE][rR][eE] (.+)\z/s;
+defined $symbol or fail('expected: <username> was here <char>');
+
+# ensure the login we found in the file *looks* correct
+$have_login =~ /\A[A-Za-z0-9-]+\z/
+    or fail('username may contain only ASCII letters, numbers, and hyphens');
+
+# ensure the username in the file matches the basename of the file
+lc($have_login) eq $login
+    or fail('username must match the lowercase filename (case-insensitive)');
+
+# ensure only 1 visible grapheme is contained in the "symbol"
+my @graphemes = $symbol =~ /\X/g;
+@graphemes == 1 && $graphemes[0] eq $symbol
+    or fail('the final item must be exactly one visible Unicode character');
+
+# ensure the visible grapheme is *not* a control character
+$symbol =~ /[^\p{Z}\p{C}]/
+    or fail('the final character cannot be whitespace or a control character');
+
+# ok! at this point we are sure the file is valid (probably)
+print "OK: $file\n";
