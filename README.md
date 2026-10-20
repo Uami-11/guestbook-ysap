@@ -35,6 +35,15 @@ Contributing
 
 Ready to add your name? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Testing
+-------
+
+Run the following to check source code style and contributors validate.
+
+```
+make check test
+```
+
 License
 -------
 
