@@ -11,7 +11,7 @@ Add your entry
 2. Clone the fork to your computer.
 3. Create `./contributors/<your-github-username>.txt` - the filename *must* be
    all lowercase.
-4. Add one line in this shape:
+4. Add one line like this:
 
    ```
    Your-GitHub-Username was here 😎
@@ -30,14 +30,21 @@ Add your entry
 
 7. Commit and push your change, then open a pull request.
 
-NOTE: The `validate-file` checker dose requires Perl 5 as it can correctly parse
-and understand Unicode grapheme / compound emoji as one visible character.
-
 Updating or removing your entry
 --------------------------------
 
-You may later edit or delete your own file in a new pull request.  A pull request
-cannot change another contributor's entry or any project files.
+You may later edit or delete your own file in a new pull request - the PR author
+must match the file being modified.
+
+Format
+------
+
+```
+<username> was here <emoji>\n
+```
+
+Where `<username>` is a valid GitHub username and `<emoji>` is a single emoji
+(or character, or visible grapheme).
 
 Common Issues
 -------------
@@ -55,13 +62,20 @@ Common Issues
 Notes
 -----
 
+The `validate-file` checker dose requires Perl 5 as it can correctly parse
+and understand Unicode grapheme / compound emoji as one visible character.  If
+your system does not have that that's fine - the CI that GitHub will perform has
+perl and can validate the file.
+
+---
+
 The rules and format of the text file might seem surprisingly strict - that is
 by design.  I want to make it easy for people new to git and GitHub to get their
 feet wet with a project that is incredibly low-stakes, but has a somewhat
 involved validation process.  This way, they'll feel comfortable in the future
 when it comes to make a pull-request to a "real" project.
 
-So remember, this project is low stakes! don't be afraid to create a PR and see
+So remember, this project is low stakes!  Don't be afraid to create a PR and see
 that it breaks the validator - that's the point of the validator! Pushing a
 change that is invalid is part of the learning process - don't feel worried or
 scared of that.

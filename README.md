@@ -12,8 +12,8 @@ use this repo as a starting point to make your first ever contribution or first
 ever pull-request.  If you are already comfortable with that, or even consider
 yourself a veteran, you are welcome just the same!
 
-Put simply, every user can create their own text file in the
-[`contributors`](/contributors) directory in this repo.
+Every user can create their own text file in the [`contributors`](/contributors)
+directory in this repo.
 
 For example:
 
