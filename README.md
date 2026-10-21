@@ -1,5 +1,5 @@
-I Was Here
-==========
+Guestbook
+=========
 
 A virtual guestbook - learn the complete GitHub pull-request workflow.
 
