@@ -5,7 +5,19 @@
 CDPATH='' cd -- "$(dirname -- "$0")/.." || exit 1
 
 code=0
+count=0
 for f in ./contributors/*.txt; do
+	((count++))
 	./tools/validate-file "$f" || code=1
 done
+
+echo
+echo "found $count contributors"
+
+if ((code == 0)); then
+	echo 'all contributors valid'
+else
+	echo 'errors found'
+fi
+
 exit "$code"
