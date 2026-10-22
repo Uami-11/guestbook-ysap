@@ -75,7 +75,7 @@ feet wet with a project that is incredibly low-stakes, but has a somewhat
 involved validation process.  This way, they'll feel comfortable in the future
 when it comes to make a pull-request to a "real" project.
 
-So remember, this project is low stakes!  Don't be afraid to create a PR and see
+So remember, this project is low-stakes!  Don't be afraid to create a PR and see
 that it breaks the validator - that's the point of the validator! Pushing a
 change that is invalid is part of the learning process - don't feel worried or
 scared of that.
