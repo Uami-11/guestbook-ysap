@@ -22,22 +22,22 @@ use warnings;
 use Encode qw(decode FB_CROAK);
 use File::Basename qw(basename);
 
-sub usage {
-	print STDERR "usage: validate-file ./contributors/<github-login>.txt\n";
-}
-
-sub fail {
-	my ($message) = @_;
-	print STDERR "error: $message\n";
-	exit 1;
-}
-
 # get file argument
 if (@ARGV != 1) {
 	usage();
 	exit 2;
 }
 my $file = $ARGV[0];
+
+sub usage {
+	print STDERR "usage: validate-file ./contributors/<github-login>.txt\n";
+}
+
+sub fail {
+	my ($message) = @_;
+	print STDERR "FAIL: $file - $message\n";
+	exit 1;
+}
 
 # ensure it is a regular file
 -f $file or fail("not a regular file: $file");
