@@ -5,7 +5,7 @@ all:
 
 .PHONY: check
 check:
-	./tools/style-check ./tools/*
+	./tools/style-check ./tools/* ./*.md
 
 .PHONY: test
 test:
