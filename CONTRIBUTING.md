@@ -62,10 +62,10 @@ Common Issues
 Notes
 -----
 
-The `validate-file` checker dose requires Perl 5 as it can correctly parse
-and understand Unicode grapheme / compound emoji as one visible character.  If
-your system does not have that that's fine - the CI that GitHub will perform has
-perl and can validate the file.
+The `validate-file` checker requires Perl 5 as it can correctly parse and
+understand Unicode grapheme / compound emoji as one visible character.  If your
+system does not have that that's fine - the CI that GitHub will perform has perl
+and can validate the file.
 
 ---
 
